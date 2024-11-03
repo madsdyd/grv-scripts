@@ -1,0 +1,197 @@
+# Farver som ankre, som kan bruges under 'møde' og 'begivenhed'
+farver:
+  bestyrelsesmode: &bestyrelsesmode_farve "#4400DD"  # Blå
+  arrangementer: &arrangementer_farve "#C4007A" # DRV Magenta
+  byradsmode: &byradsmode_farve "#0075A5"  # Lyseblå - hovedfarve på kommunens hjemmeside.
+  kors_bestyrelsesmode: &kors_bestyrelsesmode_farve "#00DD00"  # Grøn
+  kors_hb_formode: &kors_hb_formode_farve "#00DD00" 
+  hb_mode: &hb_mode_farve "#800080"  # Lilla
+
+# Stuff to consider
+# nytårsarrangement, Tove
+# Deadline for KV25 materiale? 23/8 2025 -- mads?
+# Regionsrådsaktiviteter?
+# Generalforsamling (I april, ikke?)
+
+  
+# Liste af faste dage som skal føres direkte over til output
+standard:
+  - "8. marts.: Kvindernes Kampdag"
+  - "Påskedag"
+  - "påskedag minus 49 dage: Fastelavn"
+  - "påskedag plus 26 dage: Store bededag"
+  - "påskedag plus 40 dage: Dagen efter Kr. himmelfartsdag"
+  - "//#C4007A flag 5.6.: Grundlovsdag"
+  - "mandag i uge 42: Efterårsferie"
+  - "27.6.2025: Skoleferie starter"
+  - "11.8.2025: Skoleferie slutter"
+  - "/#AAAAAA 1.7: Politisk ferie starter"
+  - "/#AAAAAA fra 1.7 til 31.7:"
+  - "/#AAAAAA 31.7: Politisk ferie slut"
+  - "24.12: Juleaften"
+  # OK, Den her er ikke standard, det er KV 2025
+  - "/#C4007A 25.10.2025: Valgkamp starter"
+  - "/#C4007A fra 25.10.2025 til 18.11.2025:"
+  - "/#C4007A 18.11.2025: Valgkamp slut"
+  
+
+
+# Grupper af møder med årstal, begivenheder og adhoc-begivenheder
+møde:
+  - navn: "Bestyrelsesmøde"
+    farve: *bestyrelsesmode_farve
+    2024:
+      - 26. november
+    adhoc:
+      - dato: 16. december 2024
+        label: "Bestyrelses-julemøde"
+
+  - navn: "Forslag bestyrelsesmøde"
+    farve: "#FF0000"
+    2025:
+      - 27. januar
+      - 24. februar
+      - 24. marts
+      - 22. april
+      - 20. maj
+      - 16. juni
+      - 26. august
+      - 22. september
+      - 6. oktober
+      - 20. oktober
+      - 25. november
+      - 15. december
+        
+  - navn: "Byrådsmøde"
+    # Hentes fra https://gladsaxe.dk/politik/byraad-og-udvalg/foelg-med
+    farve: *byradsmode_farve
+    2024:
+      - 20. november
+      - 18. december
+    2025:
+      - 29. januar
+      - 26. februar
+      - 26. marts
+      - 23. april
+      - 21. maj
+      - 18. juni
+      - 27. august
+      - 24. september
+      - 8. oktober
+      - 22. oktober 
+      - 26. november
+      - 17. december
+    adhoc:
+      - dato: 27. august 2025
+        label: "1. beh. budget"
+      - dato: 8. oktober 2025
+        label: "2. beh. budget"
+        
+  - navn: "KORS bestyrelsesmøde"
+    # Hentet fra div. referater udsendt på mail.
+    # Fra møde afholdt 29/10 2024:
+    farve: *kors_bestyrelsesmode_farve
+    2025:
+      - 7. januar
+      - 12. marts
+      - 8. maj
+    adhoc:
+      - dato: 3. juni 2025
+        label: "KORS årsmøde"
+        
+  - navn: "KORS HB formøde"
+    farve: *kors_hb_formode_farve
+    2024:
+      - 18. november
+    2025:
+      - 20. januar
+      - 17. marts
+      - 19. maj
+      - 25. august
+      - 29. september
+      - 24. november
+    adhoc:
+      - dato: 25. august 2025
+        label: (Ikke indkaldt)
+      - dato: 29. september 2025
+        label: (Ikke indkaldt)
+      - dato: 24. november 2025
+        label: (Ikke indkaldt)
+        
+        
+  - navn: "HB møde"
+    # Hentet fra medlemradikale under HB: https://www.medlemradikale.dk/?frontNav=1&frontID=11
+    farve: *hb_mode_farve
+    2024:
+      - 23. november
+    2025:
+      - 25. januar
+      - 22. marts
+      - 24. maj
+      - 30. august
+      - 4. oktober
+      - 29. november
+    
+
+# Individuelle begivenheder med brugerdefinerede farver
+# HUSK: Fuld dato krævet!
+begivenhed:
+  - dato: 11/11 2024
+    label: Ekstraordinær gen.
+    farve: *arrangementer_farve
+
+  - dato: 23. august 2025
+    label: Gladsaxedagen
+    farve: *arrangementer_farve
+    
+  # De fælgende herunder er fra medlemradikale's kalender, opdateret 2/11 2024.  
+  - dato: 12. november 2024
+    label: Møde i K-forum
+    farve: "#CC0000"
+    
+  - dato: 26. november 2024
+    label: Introaften på Christiansborg
+    farve: *arrangementer_farve
+    
+  - dato: 11. januar 2025
+    label: Nytårsstævne
+    farve: *arrangementer_farve
+    
+  - dato: 12. januar 2025
+    label: Nytårsstævne
+    farve: *arrangementer_farve
+
+  - dato: 4. februar 2025
+    label: Introaften på Christiansborg
+    farve: *arrangementer_farve
+
+  - dato: 5. april 2025
+    label: Foreningstræf
+    farve: "#CC0000"
+    
+  - dato: 27. april 2025
+    label: Statsborgerskabsdag på Christiansborg
+    farve: *arrangementer_farve
+
+  - dato: 6. maj 2025
+    label: Introaften på Christiansborg
+    farve: *arrangementer_farve
+
+  - dato: 20. september 2025
+    label: Landsmøde
+    farve: *arrangementer_farve
+
+  - dato: 21. september 2025
+    label: Landsmøde
+    farve: *arrangementer_farve
+    
+  # KV 2025
+  - dato: 25. oktober 2025
+    label: Plakatopsætning
+    farve: *arrangementer_farve
+    
+  - dato: 18. november 2025
+    label: KV2025
+    farve: *arrangementer_farve
+    
+    

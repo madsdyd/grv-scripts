@@ -1,0 +1,13 @@
+Påskedag
+Grundlovsdag 5/6
+//#FF0000 4.3.2024: Bestyrelsesmøde
+//#FF0000 20.5.2024: Bestyrelsesmøde
+//#FF0000 25.8.2024: Bestyrelsesmøde
+//#FF0000 15.2.2025: Bestyrelsesmøde
+//#FF0000 20.5.2025: Bestyrelsesmøde
+//#0000FF 10.1.2024: Byrådsmøde
+//#0000FF 20.3.2024: Byrådsmøde
+//#0000FF 15.6.2024: Byrådsmøde
+//#0000FF 18.11.2024: Særligt Byrådsmøde
+//#FFD700 24.12.2024: Juleaften
+//#008000 1.1.2025: Nytårsdag

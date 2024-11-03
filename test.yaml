@@ -1,0 +1,36 @@
+farver:
+  bestyrelsesmode: &bestyrelsesmode_farve "#FF0000"
+  byradsmode: &byradsmode_farve "#0000FF"
+
+standard:
+  - "Påskedag"
+  - "Grundlovsdag 5/6"
+
+møde:
+  - navn: "Bestyrelsesmøde"
+    farve: *bestyrelsesmode_farve
+    2024:
+      - "4. marts"
+      - "20/5"
+      - "25. august"
+    2025:
+      - "15. februar"
+      - "20. maj"
+
+  - navn: "Byrådsmøde"
+    farve: *byradsmode_farve
+    2024:
+      - "10. januar"
+      - "20. marts"
+      - "15. juni"
+    adhoc:
+      - dato: "18/11/2024"
+        label: "Særligt Byrådsmøde"
+
+begivenhed:
+  - dato: "24/12/2024"
+    label: "Juleaften"
+    farve: "#FFD700"
+  - dato: "1/1/2025"
+    label: "Nytårsdag"
+    farve: "#008000"
