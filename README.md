@@ -38,7 +38,7 @@ Det kan f.eks. se sådan her ud:
 
 ![](images/members-example.png)
 
-Hvis du er på GitHub, burde du kunne se et ["live" eksempel](members-example.html).
+Der er eksempel på uddata [uddata](members-example.html) her.
 
 Scriptet afhænger af at man har medlemsinformationen downloadet som Excel ark fra mit.radikale.dk. I filen [members-example.xlsx](members-example.xlsx) ligger et eksempel man kan bruge, som er baseret på syntetiske data fra Gladsaxe kommune.
 
@@ -47,7 +47,7 @@ Man kan køre scriptet på eksempel data, for at se hvordan scriptet fungerer, m
 ./visualize-members.py members-example.xlsx members-example.html
 ```
 
-(Se nedenfor, for at se hvordan man viser den HTML side der blevet dannet).
+Bemærk at scriptet er længe om at køre første gang, fordi den skal geokode adresserne. Det bliver "cachet", så det er hurtigere næste gang. Se nedenfor, for at se hvordan man viser den HTML side der blevet dannet.
 
 ### Workflow
 
@@ -69,7 +69,7 @@ Når man har filen `members.xlsx` så kan oprette sin HTML side f.eks. sådan he
 
 Scriptet er lidt langsomt den første gang, fordi det slår lat/long op for alle medlemmer i filen. Og for ikke at overbelaste den service der bruges til dette, holdes der en kort pause imellem hvert opslag. Lat long på kendte adresser gemmes dog imellem hver kørsel i filen `.geocache`, så det går betydeligt hurtigere næste gang.
 
-Desuden hentes også information kommunegrænser, der gemmes i filen `.municipalities.json`. Hvis kommunegrænserne en dag ændrer sig, bør denne fil slettes.
+Desuden hentes også information om kommunegrænser, der gemmes i filen `.municipalities.json`. Hvis kommunegrænserne en dag ændrer sig, bør denne fil slettes, så den kan blive hentet igen.
 
 Bemærk, at der lejlighedsvist er adresser der ikke kan slås op. Information om medlemmer med adresser der ikke kan slås op, vil blive listet på HTML siden.
 
