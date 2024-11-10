@@ -49,19 +49,26 @@ møde:
   - navn: "Forslag bestyrelsesmøde"
     farve: "#FF0000"
     2025:
-      - 27. januar
+      - 27. januar  # Afbud fra Pia.
       - 24. februar
       - 24. marts
       - 22. april
-      - 20. maj
+      - 20. maj  # OBS: Kollision med BUU
       - 16. juni
       - 26. august
       - 22. september
-      - 6. oktober
+#      - 6. oktober 
       - 20. oktober
       - 25. november
       - 15. december
-        
+
+  - navn: "Forslag gen.fors."
+    farve: "#FF0000"
+    2025:
+      - 2. april # Alle øvrige dage er der møder i byrådet, eller påske.
+      - 30. april
+    
+      
   - navn: "Byrådsmøde"
     # Hentes fra https://gladsaxe.dk/politik/byraad-og-udvalg/foelg-med
     farve: *byradsmode_farve
