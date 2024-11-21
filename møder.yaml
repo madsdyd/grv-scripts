@@ -66,7 +66,6 @@ møde:
     farve: "#FF0000"
     2025:
       - 2. april # Alle øvrige dage er der møder i byrådet, eller påske.
-      - 30. april
     
       
   - navn: "Byrådsmøde"
@@ -138,6 +137,9 @@ møde:
       - 30. august
       - 4. oktober
       - 29. november
+    adhoc: 
+      - dato: 17. maj 2025
+        label: 24. maj forslag rykket
     
 
 # Individuelle begivenheder med brugerdefinerede farver
@@ -156,10 +158,18 @@ begivenhed:
     label: Møde i K-forum
     farve: "#CC0000"
     
+  - dato: 21. januar 2025
+    label: Møde i K-forum
+    farve: "#CC0000"
+
   - dato: 26. november 2024
     label: Introaften på Christiansborg
     farve: *arrangementer_farve
-    
+  
+  - dato: 29. november 2024
+    label: Juletræstænding Gladsaxe Rådhus
+    farve: *arrangementer_farve
+  
   - dato: 11. januar 2025
     label: Nytårsstævne
     farve: *arrangementer_farve

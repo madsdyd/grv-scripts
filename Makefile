@@ -9,7 +9,7 @@ EXPECTED_OUTPUT = expected.txt
 all:	kalendersiden.txt members-example.html members.html 
 
 # Target to generate kalendersiden.txt from møder.yaml
-kalendersiden.txt:
+kalendersiden.txt:	møder.yaml
 	@$(SCRIPT) $(INPUT_FILE) $(OUTPUT_FILE)
 	@echo "Generated $(OUTPUT_FILE) from $(INPUT_FILE)."
 
