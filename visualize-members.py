@@ -22,6 +22,10 @@ import json
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import List
+from folium import MacroElement
+from jinja2 import Template
+
+
 
 # Customizable constants for municipality-specific details
 MUNICIPALITY_NAME = "Gladsaxe"
@@ -105,12 +109,12 @@ def load_address_rewrites():
         return {}
 
 
+# MATCHGROUPS
 @dataclass
 class MatchGroup:
     name: str
     matches: List[str]
     color: str
-
 
 def load_match_groups() -> List[MatchGroup]:
     if os.path.exists(MATCHGROUPS_FILE):
@@ -142,6 +146,18 @@ def load_municipalities():
     except Exception as e:
         print(f"Warning: Could not download GeoJSON data for municipalities: {e}")
         return None
+
+
+# This is used to control zoom steps in folium. Somewhat tricky. Gets inserted below.
+class ZoomControl(MacroElement):
+    _template = Template("""
+        {% macro script(this, kwargs) %}
+            // Ændrer zoomSnap og zoomDelta til 0.25 for finere zoom
+            {{ this._parent.get_name() }}.options.zoomSnap = 0.25;
+            {{ this._parent.get_name() }}.options.zoomDelta = 0.25;
+        {% endmacro %}
+    """)
+
 
 def main():
     if len(sys.argv) < 3 or sys.argv[1] in ("-h", "--help"):
@@ -195,18 +211,13 @@ def main():
     folium.TileLayer('openstreetmap').add_to(m)
     # folium.TileLayer('cartodbdark_matter').add_to(m)
 
-    # Add groups for layers
+    # Add groups for layers. We alywas add a Medlemmer layer, but if there are additional layers, add them.
     f_member_group = folium.FeatureGroup(name="Medlemmer")
     keyed_match_groups = {}
     for match_group in match_groups:
         key = match_group.name
         keyed_match_groups[key] = folium.FeatureGroup(name=key)
     
-    #f_board_group = folium.FeatureGroup(name="Bestyrelsesmedlemmer")
-    #f_elected_group = folium.FeatureGroup(name="Valgte")
-    #f_delegate_group = folium.FeatureGroup(name="Landsmødedelegerede")
-
-
     # Load and add municipalities GeoJSON layer
     municipalities_geojson = load_municipalities()
     if municipalities_geojson:
@@ -226,9 +237,6 @@ def main():
             tooltip=folium.GeoJsonTooltip(fields=['label_dk'], aliases=['Kommune:'])
         ).add_to(m)
         
-        # Add a layer control to toggle municipality boundaries
-        #folium.LayerControl().add_to(m)
-
     # Add markers for each unique address
     for (lat, lon), members in address_dict.items():
         # Combine member information for popup without labels
@@ -276,6 +284,9 @@ def main():
 
     # Add layer control
     folium.LayerControl().add_to(m)
+
+    # Add finegrained zoom control
+    m.add_child(ZoomControl())
 
 
     m.save(output_file)
