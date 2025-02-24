@@ -11,8 +11,6 @@ farver:
 # nytårsarrangement, Tove
 # Deadline for KV25 materiale? 23/8 2025 -- mads?
 # Regionsrådsaktiviteter?
-# Generalforsamling (I april, ikke?)
-
   
 # Liste af faste dage som skal føres direkte over til output
 standard:
@@ -34,40 +32,35 @@ standard:
   - "/#C4007A fra 25.10.2025 til 18.11.2025:"
   - "/#C4007A 18.11.2025: Valgkamp slut"
   
-
-
 # Grupper af møder med årstal, begivenheder og adhoc-begivenheder
 møde:
   - navn: "Bestyrelsesmøde"
     farve: *bestyrelsesmode_farve
     2024:
       - 26. november
-    adhoc:
-      - dato: 16. december 2024
-        label: "Bestyrelses-julemøde"
-
-  - navn: "Forslag bestyrelsesmøde"
-    farve: "#FF0000"
     2025:
       - 27. januar  # Afbud fra Pia.
       - 24. februar
       - 24. marts
       - 22. april
-      - 20. maj  # OBS: Kollision med BUU
-      - 16. juni
-      - 26. august
+      - 19. maj # Oprindeligt 20/5 senere, men HB flyttede
+      - 16. juni # Dette møde har fokus på valgkamp og Gladsaxedagen
+      - 19. august # Oprindeligt 26/8, men flyttes så før Gladsaxedagen. 
       - 22. september
-#      - 6. oktober 
       - 20. oktober
       - 25. november
-      - 15. december
+      #      - 15. december # Er som julebestyrelsesmøde
+    adhoc:
+      - dato: 16. december 2024
+        label: "Bestyrelses-julemøde"
+      - dato: 15. december 2025
+        label: "Julebestyrelsesmøde"
 
-  - navn: "Forslag gen.fors."
+  - navn: "Generalforsamling"
     farve: "#FF0000"
     2025:
       - 2. april # Alle øvrige dage er der møder i byrådet, eller påske.
-    
-      
+          
   - navn: "Byrådsmøde"
     # Hentes fra https://gladsaxe.dk/politik/byraad-og-udvalg/foelg-med
     farve: *byradsmode_farve
@@ -112,7 +105,7 @@ møde:
     2025:
       - 20. januar
       - 17. marts
-      - 19. maj
+      - 12. maj # Oprindeligt 19/5, HB møde flyttet.
       - 25. august
       - 29. september
       - 24. november
@@ -133,13 +126,10 @@ møde:
     2025:
       - 25. januar
       - 22. marts
-      - 24. maj
+      - 17. maj # Oprindeligt 24/5, flyttet.
       - 30. august
       - 4. oktober
       - 29. november
-    adhoc: 
-      - dato: 17. maj 2025
-        label: 24. maj forslag rykket
     
 
 # Individuelle begivenheder med brugerdefinerede farver
