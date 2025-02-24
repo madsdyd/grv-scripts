@@ -182,8 +182,17 @@ def main():
     save_cache(cache)
 
     # Create Folium map centered on the specified municipality location
-    m = folium.Map(location=START_LOCATION, zoom_start=12, tiles="OpenStreetMap")
-    
+    m = folium.Map(location=START_LOCATION, zoom_start=12)
+    folium.TileLayer('openstreetmap').add_to(m)
+    # folium.TileLayer('cartodbdark_matter').add_to(m)
+
+    # Add groups for the additional info stuff
+    f_member_group = folium.FeatureGroup(name="Medlemmer")
+    f_board_group = folium.FeatureGroup(name="Bestyrelsesmedlemmer")
+    f_elected_group = folium.FeatureGroup(name="Valgte")
+    f_delegate_group = folium.FeatureGroup(name="Landsmødedelegerede")
+
+
     # Load and add municipalities GeoJSON layer
     municipalities_geojson = load_municipalities()
     if municipalities_geojson:
@@ -204,7 +213,7 @@ def main():
         ).add_to(m)
         
         # Add a layer control to toggle municipality boundaries
-        folium.LayerControl().add_to(m)
+        #folium.LayerControl().add_to(m)
 
     # Add markers for each unique address
     for (lat, lon), members in address_dict.items():
@@ -213,21 +222,39 @@ def main():
             [f"{name}<br>{address}<br>{birthday.strftime('%d-%m-%Y') if pd.notnull(birthday) else 'Fødselsdato ukendt'}"
              for name, address, birthday in members]
         )
-        marker_color = "blue" # Default color
-        for name, _, _ in members:
-            if name in additional_info["delegates"]:
-                marker_color = "orange"
-            if name in additional_info["board_members"]:
-                marker_color = "red"
-            if name in additional_info["elected"]:
-                marker_color = "green"
-
+        # Members are always added, as blue
         folium.Marker(
             [lat, lon],
             popup=member_info,
-            icon=folium.Icon(color=marker_color)
-        ).add_to(m)
+            icon=folium.Icon(color="blue")
+        ).add_to(f_member_group)
+
+        # We may add to other groups
+        for name, _, _ in members:
+            if name in additional_info["delegates"]:
+                folium.Marker(
+                    [lat, lon],
+                    popup=member_info,
+                    icon=folium.Icon(color="orange")
+                ).add_to(f_delegate_group)
+            if name in additional_info["board_members"]:
+                folium.Marker(
+                    [lat, lon],
+                    popup=member_info,
+                    icon=folium.Icon(color="red")
+                ).add_to(f_board_group)
+            if name in additional_info["elected"]:
+                folium.Marker(
+                    [lat, lon],
+                    popup=member_info,
+                    icon=folium.Icon(color="green")
+                ).add_to(f_elected_group)
     
+    m.add_child(f_member_group)
+    m.add_child(f_delegate_group)
+    m.add_child(f_board_group)
+    m.add_child(f_elected_group)
+
     # Save map to HTML with dynamic title
     html_header = f"""
     <h1>{MUNICIPALITY_NAME} Radikale Venstres medlemmer</h1>
@@ -243,6 +270,11 @@ def main():
         html_header += failed_list_html
     
     m.get_root().html.add_child(folium.Element(html_header))
+
+    # Add layer control
+    folium.LayerControl().add_to(m)
+
+
     m.save(output_file)
     print(f"Map saved to {output_file}")
     print(f"To use map, run 'python -m http.server' in the directory of the output file, then point your browser to http://localhost:8000/{output_file}")
