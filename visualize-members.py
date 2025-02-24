@@ -28,6 +28,7 @@ START_LOCATION = [55.7333, 12.4667]  # Latitude and longitude for initial map ce
 # Constants
 CACHE_FILE = ".geocache"
 MUNICIPALITIES_FILE = ".municipalities.json"
+ADDRESS_REWRITE_FILE = ".address_rewrites.json"
 # This is where we get data about the danish municipalities from.
 GEOJSON_URL = 'https://raw.githubusercontent.com/magnuslarsen/geoJSON-Danish-municipalities/refs/heads/master/municipalities/municipalities.geojson'
 
@@ -86,10 +87,20 @@ def geocode_address(address, geolocator, cache):
             return location.latitude, location.longitude
         else:
             print(f"Warning: Could not geocode address '{address}'")
+            print(f"If you have a rewrite, add to {ADDRESS_REWRITE_FILE}: \"{address}\":\"{address} + correction\",")
             return None, None
     except Exception as e:
         print(f"Error geocoding address '{address}': {e}")
         return None, None
+
+def load_address_rewrites():
+    if os.path.exists(ADDRESS_REWRITE_FILE):
+        with open(ADDRESS_REWRITE_FILE, 'r') as f:
+            print(f"Loading address rewrites from {ADDRESS_REWRITE_FILE}")
+            return json.load(f)
+    else:
+        return {}
+
 
 def load_municipalities():
     """
@@ -127,6 +138,9 @@ def main():
     geolocator = Nominatim(user_agent="member_geocoder")
     cache = load_cache()
     
+    # Load any known address rewrites
+    address_rewrites = load_address_rewrites()
+
     # Geocode addresses and store results
     address_dict = defaultdict(list)  # To collect members by address
     failed_geocodes = []  # List for members whose addresses couldn't be geocoded
@@ -136,6 +150,9 @@ def main():
         
         if pd.notnull(raw_address) and pd.notnull(city):
             clean_address = f"{get_clean_address(raw_address)}, {city}"
+
+            # Check for rewrites
+            clean_address = address_rewrites.get(clean_address, clean_address)
             lat, lon = geocode_address(clean_address, geolocator, cache)
             
             if lat and lon:

@@ -85,6 +85,24 @@ Derefter skal man bruge sin browser til at gå til [http://localhost:8000/member
 
 Det er muligt, at nogen browsere tillader at man åbner filen direkte fra disk. Ovenstående burde dog virke altid.
 
+### Adresser der er forkerte
+
+Nogen medlemmer har forkert registrerede adresser, som ikke kan slås op. Man kan manuelt tilføje rettelser til sådanne i en fil kaldet `.address_rewrites.json`. Indholdet
+er en JSON dict, med rettelser i. Her er et eksempel indhold:
+
+```
+{
+    "Kortevej 14014, 1234 ByBergBy":"Kortevej 140, 1234 ByBergBy",
+    "Gårdstens Alle 15, 2345 Kongens Baghave":"Gårdstens Alle 15A, 2345 Kongens Baghave"
+}
+``` 
+
+I det første eksempel er vejnummeret simpelthen for langt væk. I det andet mangler et A. 
+
+Nogen gange kan systemet finde adresser korrekt, selvom de er ufuldstændige, andre gange må man lave små justeringer ala ovenstående. Vores erfaring er at ca 3% af adresserne kan være problematiske. 
+
+Når scriptet ikke kan finde en adresse, udskrives en linie der kan bruges som udgangspunkt til indhold i ovenstående fil.
+
 
 ## Overblik over møder vha. Kalendersiden.dk
 
