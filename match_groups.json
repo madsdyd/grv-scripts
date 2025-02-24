@@ -1,0 +1,22 @@
+[
+    { 
+        "name": "Landsmødedelegerede",
+        "matches": ["Ole Olsen", "Per Jensen"],
+        "color": "orange"
+    },
+    { 
+        "name": "Bestyrelsesmedlemmer",
+        "matches": ["Anders And", "Rip", "Rap", "Rup"],
+        "color": "red"
+    },
+    { 
+        "name": "Byrådsmedlemmer",
+        "matches": ["Politiker Politikersen", "Martin Lidegaard"],
+        "color": "green"
+    },
+    { 
+        "name": "Opstillede til KV2021",
+        "matches": ["Politiker Politikersen", "Martin Lidegaard", "Osv"],
+        "color": "pink"
+    }
+]

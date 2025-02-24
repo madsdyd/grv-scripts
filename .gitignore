@@ -1,3 +1,5 @@
 .geocache
 .municipalities.json
+.address_rewrites.json
+.match_groups.json
 members.xlsx

@@ -20,6 +20,8 @@ import pickle
 import requests
 import json
 from collections import defaultdict
+from dataclasses import dataclass
+from typing import List
 
 # Customizable constants for municipality-specific details
 MUNICIPALITY_NAME = "Gladsaxe"
@@ -29,7 +31,7 @@ START_LOCATION = [55.7333, 12.4667]  # Latitude and longitude for initial map ce
 CACHE_FILE = ".geocache"
 MUNICIPALITIES_FILE = ".municipalities.json"
 ADDRESS_REWRITE_FILE = ".address_rewrites.json"
-ADDITIONAL_INFO = ".additional_info.json"
+MATCHGROUPS_FILE = ".match_groups.json"
 # This is where we get data about the danish municipalities from.
 GEOJSON_URL = 'https://raw.githubusercontent.com/magnuslarsen/geoJSON-Danish-municipalities/refs/heads/master/municipalities/municipalities.geojson'
 
@@ -102,18 +104,23 @@ def load_address_rewrites():
     else:
         return {}
 
-def load_additional_info():
-    if os.path.exists(ADDITIONAL_INFO):
-        with open(ADDITIONAL_INFO, 'r') as f:
-            print(f"Loading additional info from {ADDITIONAL_INFO}")
-            add_info = json.load(f)
+
+@dataclass
+class MatchGroup:
+    name: str
+    matches: List[str]
+    color: str
+
+
+def load_match_groups() -> List[MatchGroup]:
+    if os.path.exists(MATCHGROUPS_FILE):
+        with open(MATCHGROUPS_FILE, 'r', encoding="utf-8") as f:
+            print(f"Loading match groups from {MATCHGROUPS_FILE}")
+            data = json.load(f)
+            return [MatchGroup(**item) for item in data]
     else:
-        add_info = {}
+        return []
     
-    add_info["board_members"] = add_info.get("board_members", [])
-    add_info["elected"] = add_info.get("elected", [])
-    add_info["delegates"] = add_info.get("delegates", [])
-    return add_info
 
 def load_municipalities():
     """
@@ -153,7 +160,9 @@ def main():
     
     # Load any known address rewrites or additional info
     address_rewrites = load_address_rewrites()
-    additional_info = load_additional_info()
+    match_groups = load_match_groups()
+
+    #print(f"Dumping match_groups: {match_groups}")
 
     # Geocode addresses and store results
     address_dict = defaultdict(list)  # To collect members by address
@@ -186,11 +195,16 @@ def main():
     folium.TileLayer('openstreetmap').add_to(m)
     # folium.TileLayer('cartodbdark_matter').add_to(m)
 
-    # Add groups for the additional info stuff
+    # Add groups for layers
     f_member_group = folium.FeatureGroup(name="Medlemmer")
-    f_board_group = folium.FeatureGroup(name="Bestyrelsesmedlemmer")
-    f_elected_group = folium.FeatureGroup(name="Valgte")
-    f_delegate_group = folium.FeatureGroup(name="Landsmødedelegerede")
+    keyed_match_groups = {}
+    for match_group in match_groups:
+        key = match_group.name
+        keyed_match_groups[key] = folium.FeatureGroup(name=key)
+    
+    #f_board_group = folium.FeatureGroup(name="Bestyrelsesmedlemmer")
+    #f_elected_group = folium.FeatureGroup(name="Valgte")
+    #f_delegate_group = folium.FeatureGroup(name="Landsmødedelegerede")
 
 
     # Load and add municipalities GeoJSON layer
@@ -229,31 +243,20 @@ def main():
             icon=folium.Icon(color="blue")
         ).add_to(f_member_group)
 
-        # We may add to other groups
+        # We may need add to other groups
         for name, _, _ in members:
-            if name in additional_info["delegates"]:
-                folium.Marker(
-                    [lat, lon],
-                    popup=member_info,
-                    icon=folium.Icon(color="orange")
-                ).add_to(f_delegate_group)
-            if name in additional_info["board_members"]:
-                folium.Marker(
-                    [lat, lon],
-                    popup=member_info,
-                    icon=folium.Icon(color="red")
-                ).add_to(f_board_group)
-            if name in additional_info["elected"]:
-                folium.Marker(
-                    [lat, lon],
-                    popup=member_info,
-                    icon=folium.Icon(color="green")
-                ).add_to(f_elected_group)
-    
+            for match_group in match_groups:
+                if name in match_group.matches:
+                    folium.Marker(
+                        [lat, lon],
+                        popup=member_info,
+                        icon=folium.Icon(color=match_group.color)
+                ).add_to(keyed_match_groups[match_group.name])
+
+    # Add the layers to the map    
     m.add_child(f_member_group)
-    m.add_child(f_delegate_group)
-    m.add_child(f_board_group)
-    m.add_child(f_elected_group)
+    for match_group in match_groups:
+        m.add_child(keyed_match_groups[match_group.name])
 
     # Save map to HTML with dynamic title
     html_header = f"""
