@@ -25,10 +25,11 @@ from collections import defaultdict
 MUNICIPALITY_NAME = "Gladsaxe"
 START_LOCATION = [55.7333, 12.4667]  # Latitude and longitude for initial map center
 
-# Constants
+# Constants - this really needs to be options, but no time for that right now.
 CACHE_FILE = ".geocache"
 MUNICIPALITIES_FILE = ".municipalities.json"
 ADDRESS_REWRITE_FILE = ".address_rewrites.json"
+ADDITIONAL_INFO = ".additional_info.json"
 # This is where we get data about the danish municipalities from.
 GEOJSON_URL = 'https://raw.githubusercontent.com/magnuslarsen/geoJSON-Danish-municipalities/refs/heads/master/municipalities/municipalities.geojson'
 
@@ -101,6 +102,18 @@ def load_address_rewrites():
     else:
         return {}
 
+def load_additional_info():
+    if os.path.exists(ADDITIONAL_INFO):
+        with open(ADDITIONAL_INFO, 'r') as f:
+            print(f"Loading additional info from {ADDITIONAL_INFO}")
+            add_info = json.load(f)
+    else:
+        add_info = {}
+    
+    add_info["board_members"] = add_info.get("board_members", [])
+    add_info["elected"] = add_info.get("elected", [])
+    add_info["delegates"] = add_info.get("delegates", [])
+    return add_info
 
 def load_municipalities():
     """
@@ -138,8 +151,9 @@ def main():
     geolocator = Nominatim(user_agent="member_geocoder")
     cache = load_cache()
     
-    # Load any known address rewrites
+    # Load any known address rewrites or additional info
     address_rewrites = load_address_rewrites()
+    additional_info = load_additional_info()
 
     # Geocode addresses and store results
     address_dict = defaultdict(list)  # To collect members by address
@@ -199,9 +213,19 @@ def main():
             [f"{name}<br>{address}<br>{birthday.strftime('%d-%m-%Y') if pd.notnull(birthday) else 'Fødselsdato ukendt'}"
              for name, address, birthday in members]
         )
+        marker_color = "blue" # Default color
+        for name, _, _ in members:
+            if name in additional_info["delegates"]:
+                marker_color = "orange"
+            if name in additional_info["board_members"]:
+                marker_color = "red"
+            if name in additional_info["elected"]:
+                marker_color = "green"
+
         folium.Marker(
             [lat, lon],
             popup=member_info,
+            icon=folium.Icon(color=marker_color)
         ).add_to(m)
     
     # Save map to HTML with dynamic title
