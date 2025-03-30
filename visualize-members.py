@@ -53,6 +53,9 @@ def load_data(file_path):
         print(f"Error loading Excel file: {e}")
         sys.exit(1)
     
+    # Remove extra spaces from Navn column
+    df['Navn'] = df['Navn'].str.replace(r'\s+', ' ', regex=True)
+    
     return df
 
 def load_cache():
@@ -260,7 +263,13 @@ def main():
                         popup=member_info,
                         icon=folium.Icon(color=match_group.color)
                 ).add_to(keyed_match_groups[match_group.name])
+                    match_group.matches.remove(name)  # Remove after match
 
+    # Dump names that did not match
+    for match_group in match_groups:
+        if match_group.matches:
+            print(f"Warning: Non-matched names in '{match_group.name}': {match_group.matches}")
+        
     # Add the layers to the map    
     m.add_child(f_member_group)
     for match_group in match_groups:
