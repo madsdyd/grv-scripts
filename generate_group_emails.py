@@ -4,7 +4,7 @@
 Generér e-mail-lister pr. matchgruppe.
 
 Brug:
-    python generate_group_emails.py /sti/til/members.xlsx /sti/til/.match_groups.json
+    python generate_group_emails.py [members.xlsx] [.match_groups.json]
 
 Forventet Excel:
 - Første fane indeholder data.
@@ -21,23 +21,34 @@ Gruppenavn: "Navn 1" <mail1@eksempel.dk>, "Navn 2" <mail2@eksempel.dk>, ...
 
 Bemærk:
 - Navnematch er case-insensitive og trimmet for mellemrum.
+- Overflødige mellemrum i Excel-navne fjernes (flere mellemrum -> ét).
 - Hvis en e-mail ikke findes, udskrives <mangler email>.
 - Evt. advarsler (fx dubletter) skrives til stderr.
 """
 import argparse
 import json
 import sys
+import re
 from pathlib import Path
 from typing import Dict, List, Tuple
 
 import pandas as pd
 
 
-def normalize(s: str) -> str:
-    """Normalisér navne for robust match: trim + casefold."""
-    if s is None:
+def clean_name(name: str) -> str:
+    """Rens navn: fjern start/slut mellemrum og reducer flere mellemrum til ét."""
+    if not isinstance(name, str):
         return ""
-    return str(s).strip().casefold()
+    # Fjern start/slut mellemrum
+    name = name.strip()
+    # Reducer sekvenser af mellemrum til ét
+    name = re.sub(r"\s+", " ", name)
+    return name
+
+
+def normalize(s: str) -> str:
+    """Normalisér navne for robust match: trim, reducer mellemrum og casefold."""
+    return clean_name(s).casefold()
 
 
 def build_name_to_email(excel_path: Path) -> Tuple[Dict[str, str], List[str]]:
@@ -64,6 +75,7 @@ def build_name_to_email(excel_path: Path) -> Tuple[Dict[str, str], List[str]]:
     for i, row in df.iterrows():
         name_raw = row.get("Navn")
         email_raw = row.get("E-mail")
+        cleaned_name = clean_name(name_raw)
         key = normalize(name_raw)
         email = (str(email_raw).strip() if isinstance(email_raw, str) else "").strip()
 
@@ -78,7 +90,7 @@ def build_name_to_email(excel_path: Path) -> Tuple[Dict[str, str], List[str]]:
             prev = name_to_email[key]
             if prev and email and prev != email:
                 warnings.append(
-                    f"Dublet af navn '{row['Navn']}' med forskellig e-mail: '{prev}' vs '{email}'. "
+                    f"Dublet af navn '{cleaned_name}' med forskellig e-mail: '{prev}' vs '{email}'. "
                     f"Beholder første forekomst."
                 )
             elif not prev and email:
@@ -108,16 +120,19 @@ def format_entry(person_name: str, email: str) -> str:
     Formatér som: "Person Navn" <email>
     Hvis email mangler: <mangler email>
     """
+    cleaned = clean_name(person_name)
     email_part = email if email else "mangler email"
     # Hvis email mangler, vis som <mangler email>; ellers <email>
     email_bracketed = f"<{email_part}>" if email else "<mangler email>"
-    return f"\"{person_name}\" {email_bracketed}"
+    return f"\"{cleaned}\" {email_bracketed}"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generér e-mail-lister pr. matchgruppe.")
-    parser.add_argument("excel", type=Path, nargs="?", default=Path("members.xlsx"), help="Sti til members.xlsx (første fane bruges)")
-    parser.add_argument("groups_json", type=Path, nargs="?", default=Path(".match_groups.json"), help="Sti til .match_groups.json")    
+    parser.add_argument("excel", type=Path, nargs="?", default=Path("members.xlsx"),
+                        help="Sti til members.xlsx (første fane bruges)")
+    parser.add_argument("groups_json", type=Path, nargs="?", default=Path(".match_groups.json"),
+                        help="Sti til .match_groups.json")
     args = parser.parse_args()
 
     name_to_email, warnings = build_name_to_email(args.excel)
@@ -148,6 +163,8 @@ def main() -> None:
         # Udskriv linjen
         line = f"{grp_name}: " + ", ".join(entries)
         print(line)
+        print()
+        
 
 
 if __name__ == "__main__":
