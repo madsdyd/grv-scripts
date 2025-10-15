@@ -15,6 +15,7 @@ farver:
 # Liste af faste dage som skal føres direkte over til output
 standard:
   - "8. marts.: Kvindernes Kampdag"
+  - "9. maj: Europadag"
   - "Påskedag"
   - "påskedag minus 49 dage: Fastelavn"
   - "påskedag plus 26 dage: Store bededag"
@@ -80,10 +81,29 @@ møde:
       - 22. oktober 
       - 26. november
       - 17. december
+    # 2026 hentet fra https://dagsordener.gladsaxe.dk/vis?Referat-Byraadet-2022-2025-d.26-02-2025-kl.18.30&id=51654305-3df6-47aa-98ed-f791641aef63&fritekst=M%c3%b8deplan
+    # Ser ud til at byrådet vedtager i februar, så det er til at overskue.
+    2026:
+      - 28. januar
+      - 25. februar
+      - 25. marts
+      - 29. april
+      - 27. maj
+      - 17. juni
+      - 26. august
+      - 23. september
+      - 7. oktober
+      - 21. oktober
+      - 25. november
+      - 16. december
     adhoc:
       - dato: 27. august 2025
         label: "1. beh. budget"
       - dato: 8. oktober 2025
+        label: "2. beh. budget"
+      - dato: 26. august 2026
+        label: "1. beh. budget"
+      - dato: 7. oktober 2026
         label: "2. beh. budget"
         
   - navn: "KORS bestyrelsesmøde"
@@ -109,6 +129,13 @@ møde:
       - 25. august
       - 29. september
       - 24. november
+    2026:
+      - 19. januar
+      - 16. marts
+      - 4. maj
+      - 24. august
+      - 28. september
+      - 23. november
     adhoc:
       - dato: 25. august 2025
         label: (Ikke indkaldt)
@@ -130,6 +157,13 @@ møde:
       - 30. august
       - 4. oktober
       - 29. november
+    2026:
+      - 24. januar
+      - 21. marts
+      - 9. maj
+      - 29. august
+      - 3. oktober
+      - 28. november
     
 
 # Individuelle begivenheder med brugerdefinerede farver
@@ -163,6 +197,14 @@ begivenhed:
   - dato: 11. januar 2025
     label: Nytårsstævne
     farve: *arrangementer_farve
+
+  - dato: 10. januar 2026
+    label: Nytårsstævne
+    farve: *arrangementer_farve
+
+  - dato: 11. januar 2026
+    label: Nytårsstævne
+    farve: *arrangementer_farve
     
   - dato: 12. januar 2025
     label: Nytårsstævne
@@ -192,6 +234,14 @@ begivenhed:
     label: Landsmøde
     farve: *arrangementer_farve
     
+  - dato: 19. september 2026
+    label: Landsmøde
+    farve: *arrangementer_farve
+
+  - dato: 20. september 2026
+    label: Landsmøde
+    farve: *arrangementer_farve
+
   # KV 2025
   - dato: 25. oktober 2025
     label: Plakatopsætning
@@ -201,4 +251,33 @@ begivenhed:
     label: KV2025
     farve: *arrangementer_farve
     
+ # Fra HBs kalender
+  - dato: 28. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 29. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 30. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 11. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+
+  - dato: 12. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+    
+  - dato: 13. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+    
+  - dato: 17. august 2026
+    label: Resolutionsudvalgsmøde
+    farve: *arrangementer_farve
+        
     
