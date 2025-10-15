@@ -51,11 +51,30 @@ møde:
       - 20. oktober
       - 25. november
       #      - 15. december # Er som julebestyrelsesmøde
+      # Der er også et sommermøde i august!
+    2026:
+      - 26. januar
+      - 23. februar
+      - 23. marts
+      - 27. april
+      - 26. maj
+      - 15. juni
+      # - 24. august
+      - 21. september
+      # - 5. oktober
+      - 19. oktober
+      - 23. november
+      # - 14. december
+
     adhoc:
       - dato: 16. december 2024
         label: "Bestyrelses-julemøde"
       - dato: 15. december 2025
         label: "Julebestyrelsesmøde"
+      - dato: 14. december 2026
+        label: "Julebestyrelsesmøde"
+      - dato: 18. august 2026 # Med fokus på Gladsaxedagen
+        label: "Sommerbestyrelsesmøde"
 
   - navn: "Generalforsamling"
     farve: "#FF0000"
@@ -114,8 +133,19 @@ møde:
       - 7. januar
       - 12. marts
       - 8. maj
+      # Nedenstående aftalt med Mads til møde 19/6 - hjemme hos Mads
+      - 26. august
+      - 9. oktober
+      - 27. november
+    # 2026 aftalt med Karoline til møde 19/6 2025 - hjemme hos Mads. Bestyrelsesmøder er altid 18-21.
+    2026:
+      - 8. januar
+      - 25. marts
+      - 18. maj
     adhoc:
       - dato: 3. juni 2025
+        label: "KORS årsmøde"
+      - dato: 8. juni 2026
         label: "KORS årsmøde"
         
   - navn: "KORS HB formøde"
@@ -169,6 +199,62 @@ møde:
 # Individuelle begivenheder med brugerdefinerede farver
 # HUSK: Fuld dato krævet!
 begivenhed:
+  # 2026
+  - dato: 22. august 2026
+    label: Gladsaxedagen
+    farve: *arrangementer_farve
+  
+  - dato: 10. januar 2026
+    label: Nytårsstævne
+    farve: *arrangementer_farve
+
+  - dato: 11. januar 2026
+    label: Nytårsstævne
+    farve: *arrangementer_farve
+    
+  - dato: 19. september 2026
+    label: Landsmøde
+    farve: *arrangementer_farve
+
+  - dato: 20. september 2026
+    label: Landsmøde
+    farve: *arrangementer_farve
+
+ # Fra HBs kalender / kalender på medlemradikale
+  
+  - dato: 28. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 29. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 30. maj 2026
+    label: Naturmødet i Hirtshals
+    farve: *arrangementer_farve
+
+  - dato: 11. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+
+  - dato: 12. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+    
+  - dato: 13. juni 2026
+    label: Folkemøde på Bornholm
+    farve: *arrangementer_farve
+    
+  - dato: 17. august 2026
+    label: Resolutionsudvalgsmøde
+    farve: *arrangementer_farve
+        
+  
+  
+  
+  # TIDLIGERE END 2026
+
   - dato: 11/11 2024
     label: Ekstraordinær gen.
     farve: *arrangementer_farve
@@ -198,14 +284,6 @@ begivenhed:
     label: Nytårsstævne
     farve: *arrangementer_farve
 
-  - dato: 10. januar 2026
-    label: Nytårsstævne
-    farve: *arrangementer_farve
-
-  - dato: 11. januar 2026
-    label: Nytårsstævne
-    farve: *arrangementer_farve
-    
   - dato: 12. januar 2025
     label: Nytårsstævne
     farve: *arrangementer_farve
@@ -234,14 +312,6 @@ begivenhed:
     label: Landsmøde
     farve: *arrangementer_farve
     
-  - dato: 19. september 2026
-    label: Landsmøde
-    farve: *arrangementer_farve
-
-  - dato: 20. september 2026
-    label: Landsmøde
-    farve: *arrangementer_farve
-
   # KV 2025
   - dato: 25. oktober 2025
     label: Plakatopsætning
@@ -251,33 +321,4 @@ begivenhed:
     label: KV2025
     farve: *arrangementer_farve
     
- # Fra HBs kalender
-  - dato: 28. maj 2026
-    label: Naturmødet i Hirtshals
-    farve: *arrangementer_farve
-
-  - dato: 29. maj 2026
-    label: Naturmødet i Hirtshals
-    farve: *arrangementer_farve
-
-  - dato: 30. maj 2026
-    label: Naturmødet i Hirtshals
-    farve: *arrangementer_farve
-
-  - dato: 11. juni 2026
-    label: Folkemøde på Bornholm
-    farve: *arrangementer_farve
-
-  - dato: 12. juni 2026
-    label: Folkemøde på Bornholm
-    farve: *arrangementer_farve
-    
-  - dato: 13. juni 2026
-    label: Folkemøde på Bornholm
-    farve: *arrangementer_farve
-    
-  - dato: 17. august 2026
-    label: Resolutionsudvalgsmøde
-    farve: *arrangementer_farve
-        
     
