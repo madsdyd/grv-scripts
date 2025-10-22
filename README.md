@@ -110,7 +110,7 @@ Scriptet `get-adresses.py` giver mulighed for at hente alle adresser i en kommun
   - `--long` Outputter fulde JSON-linjer (én pr. adresse) i *NDJSON-format*.
   - `--detail` Outputter kun den menneskelæsbare “betegnelse” (f.eks. `Lillevænget 111F, 3520 Farum`).
   - *(standard uden option)* Summerer antal adresser pr. vejnavn, og viser dem tab-separeret (`<vejnavn>	<count>`).
-- **Ratebegrænsning og statusvisning** – scriptet venter 1 sekund mellem hvert API-kald og skriver løbende status til *stderr*.
+- **Ratebegrænsning og statusvisning** – scriptet venter 2 sekunder mellem hvert API-kald og skriver løbende status til *stderr*.
 - **Robust mod fejl** – håndterer tomme sider og `400`-svar som indikation af, at alle data er hentet.
 
 ### Brug
