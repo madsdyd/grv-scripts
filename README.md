@@ -126,6 +126,8 @@ Eller for kun at tælle adresser pr. vej:
 python get-adresses.py Furesø > furesoe_vej_counts.tsv
 ```
 
+Bemærk: Denne type fil kan nemt importeres i f.eks. et regneark.
+
 For at hente fulde JSON-linjer (samme struktur som DAWA’s `mini`-output):
 
 ```bash
