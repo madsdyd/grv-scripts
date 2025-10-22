@@ -99,6 +99,53 @@ Nogen gange kan systemet finde adresser korrekt, selvom de er ufuldstændige, an
 
 Når scriptet ikke kan finde en adresse, udskrives en linie der kan bruges som udgangspunkt til indhold i `.address_rewrites.json`
 
+## Hentning af adresser fra DAWA
+
+Scriptet `get-adresses.py` giver mulighed for at hente alle adresser i en kommune direkte fra [Danmarks Adressers Web API (DAWA)](https://api.dataforsyningen.dk/). Det kan automatisk slå kommunekoden op ud fra kommunens navn og understøtter flere forskellige outputformater.
+
+### Funktionalitet
+- **Automatisk opslag af kommunekode** – du kan blot skrive f.eks. `Furesø`, og scriptet finder selv koden `0190`.
+- **Tre output-tilstande:**
+  - `--long` Outputter fulde JSON-linjer (én pr. adresse) i *NDJSON-format*.
+  - `--detail` Outputter kun den menneskelæsbare “betegnelse” (f.eks. `Lillevænget 111F, 3520 Farum`).
+  - *(standard uden option)* Summerer antal adresser pr. vejnavn, og viser dem tab-separeret (`<vejnavn>	<count>`).
+- **Ratebegrænsning og statusvisning** – scriptet venter 1 sekund mellem hvert API-kald og skriver løbende status til *stderr*.
+- **Robust mod fejl** – håndterer tomme sider og `400`-svar som indikation af, at alle data er hentet.
+
+### Brug
+F.eks:
+
+```bash
+python get-adresses.py Furesø --detail > furesoe.txt
+```
+
+Eller for kun at tælle adresser pr. vej:
+
+```bash
+python get-adresses.py Furesø > furesoe_vej_counts.tsv
+```
+
+For at hente fulde JSON-linjer (samme struktur som DAWA’s `mini`-output):
+
+```bash
+python get-adresses.py Furesø --long > furesoe_adresser.ndjson
+```
+
+### Output
+Eksempel på standardoutput (vejnavn og antal):
+```
+Lillevænget	3
+Paltholmvej	42
+Stavnsholtvej	120
+```
+
+Eksempel på `--detail`-output:
+```
+Lillevænget 111F, 3520 Farum
+Lillevænget 113, 3520 Farum
+Lillevænget 115, 3520 Farum
+```
+
 ## Overblik over møder vha. Kalendersiden.dk
 
 For at få et overblik over de mange møder der i DRV, kan man bruge scriptet [to-kalendersiden.py](to-kalendersiden.py).
