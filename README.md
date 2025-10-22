@@ -4,7 +4,7 @@ Dette repo har et par filer og scripts der bruges af Gladsaxe Radikale Venstre t
 
 ## Formål
 
-Der er to formål lige nu
+Der er tre formål lige nu
 
 * **Visualisering af medlemmers bopæl**, ud fra medlemsdatabasen. Dette kan bruges til overblik, f.eks. for at finde ud af hvor man bør placere arrangementer, hvor der med fordel kan uddele, planlægning af uddelingsruter, mv.
 * **Hentning af adresser i en kommune**, f.eks. til når man skal planlægge uddeling af foldere, mv.
