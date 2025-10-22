@@ -32,8 +32,11 @@ def get_kommunekode(kommunenavn: str) -> str:
 
 def stream_adresser(kommunekode: str, per_side: int = 1000):
     """Generator der streamer 'mini'-adresser for en kommune fra DAWA, side for side.
-    Venter 1 sekund mellem kald for at undgå rate limiting og skriver status til stderr."""
+    Venter 1 sekund mellem kald, skriver status til stderr og håndterer 'sidst side'-cases.
+    Stopper pænt ved tom side ELLER hvis API'et returnerer 400 for en side uden data.
+    """
     import time
+    import requests
 
     base = f"{API_BASE}/adresser"
     params = {"kommunekode": kommunekode, "struktur": "mini", "per_side": per_side, "side": 1}
@@ -43,8 +46,19 @@ def stream_adresser(kommunekode: str, per_side: int = 1000):
         sys.stderr.flush()
         try:
             r = requests.get(base, params=params, timeout=30)
+            # DAWA kan returnere 400 hvis man beder om en side ud over sidste
+            if r.status_code == 400:
+                sys.stderr.write("400 fra API – antager at der ikke er flere sider.\n")
+                break
             r.raise_for_status()
             items = r.json()
+        except requests.HTTPError as e:
+            code = getattr(e.response, "status_code", None)
+            if code == 400:
+                sys.stderr.write("400 fra API – antager at der ikke er flere sider.\n")
+                break
+            sys.stderr.write(f"HTTP-fejl: {e}\n")
+            break
         except Exception as e:
             sys.stderr.write(f"Fejl: {e}\n")
             break
@@ -59,8 +73,13 @@ def stream_adresser(kommunekode: str, per_side: int = 1000):
         for it in items:
             yield it
 
+        # Hvis vi fik færre end per_side, er vi på sidste side
+        if len(items) < per_side:
+            sys.stderr.write("Sidste side nået (færre end per_side).\n")
+            break
+
         params["side"] += 1
-        time.sleep(1)
+        time.sleep(2) # Try and avoid timeouts from dataforsyningen
 
 
 def main():
