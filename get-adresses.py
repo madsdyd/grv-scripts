@@ -39,10 +39,12 @@ def stream_adresser(kommunekode: str, per_side: int = 1000):
     import requests
 
     base = f"{API_BASE}/adresser"
-    params = {"kommunekode": kommunekode, "struktur": "mini", "per_side": per_side, "side": 1}
+#    params = {"kommunekode": kommunekode, "struktur": "mini", "per_side": per_side, "side": 1}
+    params = {"kommunekode": kommunekode, "struktur": "mini" }
 
     while True:
-        sys.stderr.write(f"Henter side {params['side']}... ")
+#        sys.stderr.write(f"Henter side {params['side']}... ")
+        sys.stderr.write(f"Henter side... ")
         sys.stderr.flush()
         try:
             r = requests.get(base, params=params, timeout=30)
@@ -78,7 +80,8 @@ def stream_adresser(kommunekode: str, per_side: int = 1000):
             sys.stderr.write("Sidste side nået (færre end per_side).\n")
             break
 
-        params["side"] += 1
+        break
+#        params["side"] += 1
         time.sleep(2) # Try and avoid timeouts from dataforsyningen
 
 
