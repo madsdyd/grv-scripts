@@ -20,7 +20,10 @@ INTRO_SHEET_CONTENT = [
     "Arket er genereret automatisk af scriptet get-adresses.py.",
     "Hver faneblad repræsenterer en enkelt kommune, sorteret alfabetisk.",
     "",
-    "Fejl og mangler kan forekomme – se evt. https://dawa.aws.dk for mere info."
+    "Fejl og mangler kan forekomme – se evt. https://dawa.aws.dk for mere info.", 
+    "OBS: Postkasser og adresser er nok ikke det samme, men jeg kan ikke finde ud hvornår en adresse skal have en postkasse.",
+    "",
+    "Mads Bondo Dydensborg, 23/10 2025, mads@dydensborg.dk"
 ]
 
 def get_kommunekode(kommunenavn: str) -> str:
@@ -37,55 +40,43 @@ def get_kommunekode(kommunenavn: str) -> str:
         sys.stderr.write(f"[advarsel] Fandt ikke en entydig match for '{kommunenavn}'. Vælger '{chosen.get('navn')}' (kode {chosen.get('kode')}).")
     return chosen["kode"], chosen.get("navn", kommunenavn)
 
-def stream_adresser(kommunekode: str, per_side: int = 1000):
+def stream_adresser(kommunekode: str, per_side: int = 1000, retries=3, delay=3):
     base = f"{API_BASE}/adresser"
     params = {"kommunekode": kommunekode, "struktur": "mini"}
 
-    while True:
-        sys.stderr.write("Henter side... ")
-        sys.stderr.flush()
+    attempts = 0
+    while attempts < retries:
         try:
+            sys.stderr.write("Henter side... ")
+            sys.stderr.flush()
             r = requests.get(base, params=params, timeout=30)
             if r.status_code == 400:
                 sys.stderr.write("400 fra API – antager at der ikke er flere sider.\n")
                 break
             r.raise_for_status()
             items = r.json()
-        except requests.HTTPError as e:
-            if getattr(e.response, "status_code", None) == 400:
-                sys.stderr.write("400 fra API – antager at der ikke er flere sider.\n")
+
+            if not items:
+                sys.stderr.write("Ingen flere data.\n")
                 break
-            sys.stderr.write(f"HTTP-fejl: {e}\n")
-            break
+
+            sys.stderr.write(f"{len(items)} adresser hentet.\n")
+            sys.stderr.flush()
+
+            for it in items:
+                yield it
+
+            if len(items) < per_side:
+                sys.stderr.write("Sidste side nået (færre end per_side).\n")
+                break
+
+            break  # Stop efter én side indtil paginering evt. genindføres
+
         except Exception as e:
             sys.stderr.write(f"Fejl: {e}\n")
-            break
-
-        if not items:
-            sys.stderr.write("Ingen flere data.\n")
-            break
-
-        sys.stderr.write(f"{len(items)} adresser hentet.\n")
-        sys.stderr.flush()
-
-        for it in items:
-            yield it
-
-        if len(items) < per_side:
-            sys.stderr.write("Sidste side nået (færre end per_side).\n")
-            break
-
-        break
-        time.sleep(2)
-
-def retrying_stream_adresser(kommunekode, retries=3, delay=3):
-    for attempt in range(retries):
-        try:
-            yield from stream_adresser(kommunekode)
-            return
-        except Exception as e:
-            if attempt < retries - 1:
-                sys.stderr.write(f"Fejl under hentning, prøver igen ({attempt+1}/{retries})...\n")
+            attempts += 1
+            if attempts < retries:
+                sys.stderr.write(f"Prøver igen ({attempts}/{retries}) efter {delay} sekunder...\n")
                 time.sleep(delay)
             else:
                 raise
@@ -112,7 +103,7 @@ def generate_excel(outfile, name_pattern=None):
         sys.stderr.write(f"Behandler {navn} (kode {kode})...\n")
         counts = Counter()
         try:
-            for it in retrying_stream_adresser(kode):
+            for it in stream_adresser(kode):
                 vej = it.get("vejnavn", "")
                 counts[vej] += 1
         except Exception:
@@ -191,4 +182,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
