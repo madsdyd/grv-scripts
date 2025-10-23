@@ -4,6 +4,7 @@ import requests
 import json
 import sys
 import argparse
+import re
 from collections import Counter
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -95,7 +96,7 @@ def hent_alle_kommuner() -> list[tuple[str, str]]:
     data = r.json()
     return sorted([(k["kode"], k["navn"]) for k in data], key=lambda x: x[1])
 
-def generate_excel(outfile):
+def generate_excel(outfile, name_pattern=None):
     wb = Workbook()
     intro = wb.active
     intro.title = "Introduktion"
@@ -103,6 +104,10 @@ def generate_excel(outfile):
         intro.cell(row=idx, column=1, value=line)
 
     kommuner = hent_alle_kommuner()
+    if name_pattern:
+        regex = re.compile(name_pattern, flags=re.IGNORECASE)
+        kommuner = [k for k in kommuner if regex.match(k[1])]
+
     for kode, navn in kommuner:
         sys.stderr.write(f"Behandler {navn} (kode {kode})...\n")
         counts = Counter()
@@ -140,6 +145,7 @@ def main():
     parser.add_argument("--outfile", help="Skriv output til fil i stedet for stdout")
     parser.add_argument("--per-page", type=int, default=1000, help="Antal elementer pr. side (default 1000)")
     parser.add_argument("--all-excel", action="store_true", help="Generér Excel med data for alle kommuner")
+    parser.add_argument("--match", help="Regulært udtryk for kommunenavne ved --all-excel")
 
     args = parser.parse_args()
 
@@ -147,7 +153,7 @@ def main():
         if not args.outfile:
             sys.stderr.write("Fejl: --outfile er påkrævet med --all-excel\n")
             sys.exit(1)
-        generate_excel(args.outfile)
+        generate_excel(args.outfile, name_pattern=args.match)
         sys.exit(0)
 
     if not args.kommunenavn:
@@ -185,3 +191,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
