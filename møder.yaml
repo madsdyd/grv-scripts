@@ -53,17 +53,17 @@ møde:
       #      - 15. december # Er som julebestyrelsesmøde
       # Der er også et sommermøde i august!
     2026:
-      - 26. januar
-      - 23. februar
-      - 23. marts
-      - 27. april
+      - 27. januar
+      - 24. februar
+      - 24. marts
+      - 28. april
       - 26. maj
-      - 15. juni
+      - 16. juni
       # - 24. august
-      - 21. september
+      - 22. september
       # - 5. oktober
-      - 19. oktober
-      - 23. november
+      - 20. oktober
+      - 24. november
       # - 14. december
 
     adhoc:
@@ -71,7 +71,7 @@ møde:
         label: "Bestyrelses-julemøde"
       - dato: 15. december 2025
         label: "Julebestyrelsesmøde"
-      - dato: 14. december 2026
+      - dato: 15. december 2026
         label: "Julebestyrelsesmøde"
       - dato: 18. august 2026 # Med fokus på Gladsaxedagen
         label: "Sommerbestyrelsesmøde"
@@ -80,6 +80,8 @@ møde:
     farve: "#FF0000"
     2025:
       - 2. april # Alle øvrige dage er der møder i byrådet, eller påske.
+    2026:
+      - 26. april # Aftalt til møde 25/11 2025
           
   - navn: "Byrådsmøde"
     # Hentes fra https://gladsaxe.dk/politik/byraad-og-udvalg/foelg-med
