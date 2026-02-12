@@ -213,7 +213,15 @@ begivenhed:
   - dato: 11. januar 2026
     label: Nytårsstævne
     farve: *arrangementer_farve
-    
+
+  - dato: 25. februar 2026
+    label: Reception, Pia Skou
+    farve: *arrangementer_farve
+
+  - dato: 23. marts 2026
+    label: Medlemsarrangement
+    farve: *arrangementer_farve
+
   - dato: 19. september 2026
     label: Landsmøde
     farve: *arrangementer_farve
