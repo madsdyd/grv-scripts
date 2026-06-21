@@ -63,7 +63,7 @@ møde:
       - 21. september
       # - 5. oktober
       - 20. oktober
-      - 24. november
+      - 23. november
       # - 14. december
 
     adhoc:
@@ -71,9 +71,9 @@ møde:
         label: "Bestyrelses-julemøde"
       - dato: 15. december 2025
         label: "Julebestyrelsesmøde"
-      - dato: 15. december 2026
+      - dato: 14. december 2026
         label: "Julebestyrelsesmøde"
-      - dato: 18. august 2026 # Med fokus på Gladsaxedagen
+      - dato: 17. august 2026 # Med fokus på Gladsaxedagen
         label: "Sommerbestyrelsesmøde"
 
   - navn: "Generalforsamling"
